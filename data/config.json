@@ -1,0 +1,6 @@
+{
+  "targetBaseUrl": "http://localhost:8000/v1",
+  "targetModel": "Nous-Hermes-3-Llama-3.1-8B",
+  "apiKey": "",
+  "simulationEnabled": false
+}

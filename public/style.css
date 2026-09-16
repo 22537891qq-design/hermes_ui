@@ -1,0 +1,53 @@
+/* Custom Glassmorphism & Cyberpunk Dashboard Styling */
+:root {
+  --cyan-glow: rgba(0, 240, 255, 0.4);
+  --violet-glow: rgba(167, 139, 250, 0.35);
+}
+
+body {
+  background-color: #080c14;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0b111e;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Stat card subtle hover effect */
+.stat-card {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px -3px rgba(14, 165, 233, 0.15);
+}
+
+/* Chart Tooltip */
+.chart-tooltip {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+/* Status Pulse Animation */
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 0 0 4px #00f0ff, 0 0 12px rgba(0, 240, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 8px #00f0ff, 0 0 20px rgba(0, 240, 255, 0.7);
+  }
+}
+
+.neon-active {
+  animation: neonPulse 2s infinite;
+}

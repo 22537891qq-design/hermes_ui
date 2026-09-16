@@ -1,0 +1,9 @@
+{
+  "bootCount": 2,
+  "totalTokens": 2399493,
+  "promptTokens": 1473113,
+  "completionTokens": 926380,
+  "totalRequests": 2991,
+  "estimatedCostUsd": 3.7654,
+  "lastSavedAt": "2026-09-16T16:01:25.643Z"
+}

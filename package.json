@@ -1,0 +1,13 @@
+{
+  "name": "hermes-token-monitor",
+  "version": "1.0.0",
+  "description": "Real-time Token Usage & Key Metrics Monitoring Dashboard for Hermes LLM",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["hermes", "token-monitor", "dashboard", "metrics", "llm", "vllm"],
+  "author": "Antigravity",
+  "license": "MIT"
+}
