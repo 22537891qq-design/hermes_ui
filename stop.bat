@@ -29,5 +29,12 @@ if "%FOUND%"=="1" (
 )
 
 echo.
+echo [*] 正在检查并释放后台模型显存 (llama-server.exe)...
+taskkill /F /IM llama-server.exe >nul 2>nul
+ollama stop hermes-coder:3b >nul 2>nul
+ollama stop qwen3.5:4b >nul 2>nul
+echo [√] 显存已安全清空，所有后台推理引擎与监控服务已全部关闭。
+
+echo.
 echo =========================================================
 timeout /t 3 /nobreak >nul

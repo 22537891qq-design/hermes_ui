@@ -495,6 +495,53 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // Manually Unload Models & Free VRAM Endpoint (一键手动释放显存与关闭推理进程)
+  if (pathname === '/api/model/unload' && req.method === 'POST') {
+    const unloadReq = http.request('http://127.0.0.1:11434/api/ps', { method: 'GET' }, (psRes) => {
+      let body = '';
+      psRes.on('data', chunk => { body += chunk; });
+      psRes.on('end', () => {
+        let models = [];
+        try {
+          const parsed = JSON.parse(body);
+          models = (parsed.models || []).map(m => m.name || m.model);
+        } catch (e) {}
+
+        const unloadPromises = models.map(m => {
+          return new Promise(resolve => {
+            const r = http.request('http://127.0.0.1:11434/api/generate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' }
+            }, () => resolve());
+            r.on('error', () => resolve());
+            r.end(JSON.stringify({ model: m, keep_alive: 0 }));
+          });
+        });
+
+        Promise.all(unloadPromises).then(() => {
+          try {
+            const { exec } = require('child_process');
+            exec('taskkill /F /IM llama-server.exe', () => {});
+          } catch (e) {}
+
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, unloadedModels: models, message: '显存已释放，模型已关闭' }));
+        });
+      });
+    });
+
+    unloadReq.on('error', () => {
+      try {
+        const { exec } = require('child_process');
+        exec('taskkill /F /IM llama-server.exe', () => {});
+      } catch (e) {}
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, message: '已强制终止 llama-server.exe' }));
+    });
+    unloadReq.end();
+    return;
+  }
+
   // Real OpenAI/vLLM Compatible Chat Proxy: POST /v1/chat/completions
   if ((pathname === '/v1/chat/completions' || pathname === '/v1/completions') && req.method === 'POST') {
     const startTime = Date.now();

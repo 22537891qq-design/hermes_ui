@@ -755,6 +755,25 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSendChatTest.innerHTML = `<i data-lucide="send" class="w-3.5 h-3.5"></i><span>发送对话并统计</span>`;
         if (window.lucide) window.lucide.createIcons();
       }
+  // Manual Stop / Unload VRAM Button Handler
+  const btnUnloadModel = document.getElementById('btn-unload-model');
+  if (btnUnloadModel) {
+    btnUnloadModel.addEventListener('click', async () => {
+      btnUnloadModel.disabled = true;
+      btnUnloadModel.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>正在释放...</span>`;
+      if (window.lucide) window.lucide.createIcons();
+
+      try {
+        const resp = await fetch('/api/model/unload', { method: 'POST' });
+        const data = await resp.json();
+        showToast('✅ ' + (data.message || '显存已彻底释放，推理引擎已退出！'));
+      } catch (err) {
+        showToast('❌ 释放显存请求失败: ' + err.message);
+      } finally {
+        btnUnloadModel.disabled = false;
+        btnUnloadModel.innerHTML = `<i data-lucide="power" class="w-3.5 h-3.5"></i><span>释放显存/停止模型</span>`;
+        if (window.lucide) window.lucide.createIcons();
+      }
     });
   }
 
